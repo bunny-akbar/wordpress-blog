@@ -6,9 +6,9 @@
     style="border-radius: 0px"
     flat
   >
-    <v-container class="px-0 pt-6" fluid>
+    <v-container class="px-0 pt-12" fluid>
       <v-row v-if="isSortingEnabled">
-        <v-col align="center" class="pa-0" cols="12">
+        <v-col align="center" class="px-0 pt-12" cols="12">
           <v-card flat color="transparent">
             <div v-if="noPosts" class="display-4 font-weight-light mb-1">
               <div>
@@ -41,7 +41,7 @@
         </v-col>
       </v-row>
       <v-row v-if="!isSortingEnabled && !$vuetify.breakpoint.xsOnly">
-        <v-col class="pa-0" cols="4">
+        <v-col class="px-0 pt-8" cols="4">
           <v-img
             :height="$vuetify.breakpoint.xsOnly ? '400px' : '700px'"
             style="border-radius: 0px 8px 8px 0px"
