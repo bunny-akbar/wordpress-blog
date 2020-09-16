@@ -10,6 +10,15 @@
 
     <v-main>
       <router-view></router-view>
+      <v-snackbar
+        v-model="$store.state.snackbar.show"
+        bottom
+        center
+        :timeout="0"
+        :color="this.$store.state.snackbar.color"
+      >
+        {{ $store.state.snackbar.message }}
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>

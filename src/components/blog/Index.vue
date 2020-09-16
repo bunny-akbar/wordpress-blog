@@ -85,7 +85,7 @@ export default {
         if (!page) return;
         this.loading = true;
         this.pageNumber = page;
-        await fetchPostsByPage(page, this.category);
+        await fetchPostsByPage(page, this.category, this.tag);
         this.loading = false;
       },
     },
@@ -94,6 +94,7 @@ export default {
     navToPage(page) {
       if (this.category)
         return this.$router.push(`?category=${this.category}&&page=${page}`);
+      if (this.tag) return this.$router.push(`?tag=${this.tag}&&page=${page}`);
       this.$router.push(`?page=${page}`);
       // fetchNextPage(page)
     },

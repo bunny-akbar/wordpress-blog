@@ -25,7 +25,7 @@ async function fetchBlogs() {
     store.commit("SET_POST_COUNT", res.data.found);
     return true;
   } catch (error) {
-    console.log(error);
+    errorHandler(error);
   }
 }
 
@@ -37,7 +37,7 @@ async function fetchCategories() {
     store.commit("SET_CATEGORIES", res.data.categories);
     return true;
   } catch (error) {
-    console.log(error);
+    errorHandler(error);
   }
 }
 
@@ -48,11 +48,10 @@ async function fetchTags() {
     );
     const sorted = res.data.tags.sort((a, b) => b.post_count - a.post_count);
     const topTen = sorted.slice(0, 10);
-    console.log(topTen);
     store.commit("SET_TOP_TAGS", topTen);
     return true;
   } catch (error) {
-    console.log(error);
+    errorHandler(error);
   }
 }
 
@@ -61,13 +60,12 @@ async function fetchPostsbyTagOrCategory(type, value) {
     const res = await axios.get(
       `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts?${type}=${value}&&?number=25`
     );
-    console.log(res.data);
     store.commit("SET_POSTS", res.data.posts);
     store.commit("SET_POST_COUNT", res.data.found);
     window.scrollTo(0, 0);
     return true;
   } catch (error) {
-    console.log(error);
+    errorHandler(error);
   }
 }
 
@@ -76,24 +74,55 @@ async function fetchRelatedPosts(postID) {
     const res = await axios.post(
       `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/${postID}/related`
     );
-    console.log(res.data);
     store.commit("SET_RELATED_POSTS", res.data.posts);
     return true;
   } catch (error) {
-    console.log(error);
+    errorHandler(error);
   }
 }
 
-async function fetchPostsByPage(page, category) {
+async function fetchPostsByPage(page, category, tag) {
   try {
-    const url = category
-      ? `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts?category=${category}&&page=${page}&&per_page=25`
-      : `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts?page=${page}&&per_page=25`;
+    let url = `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts?page=${page}&&per_page=25`;
+
+    if (category)
+      url = `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts?category=${category}&&page=${page}&&per_page=25`;
+    if (tag)
+      url = `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts?tag=${tag}&&page=${page}&&per_page=25`;
     const res = await axios.get(url);
     store.commit("SET_POSTS", res.data.posts);
     store.commit("SET_POST_COUNT", res.data.found);
     return true;
   } catch (error) {
-    console.log(error);
+    errorHandler(error);
   }
+}
+
+function errorHandler(err) {
+  errorHandler(err);
+  let message = null;
+
+  if (err.response) {
+    // client received an error response (5xx, 4xx)
+    if (err.response.status >= 500 && err.response.status != 503)
+      message = `The server ran into an internal issue. Please try again or contact admin.`;
+    else if (err.response.status === 503)
+      message = `Server not available at the moment. Please try again later`;
+    else if (err.response.status >= 400 && err.response.status < 500)
+      message = err.response.data.message + ". Please try again.";
+  } else if (err.request) {
+    // client never received a response, or request never left
+    message = "Failed to reach the server. Please try again.";
+  } else {
+    // anything else
+    message =
+      "We encountered an unexpected error! Please try after some time or contact support.";
+  }
+
+  store.commit("TOGGLE_SNACKBAR", {
+    show: true,
+    message: message || "We encountered a problem! Please contact support.",
+    color: "error",
+  });
+  return false;
 }

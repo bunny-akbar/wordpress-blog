@@ -11,6 +11,11 @@ export default new Vuex.Store({
     topTags: [],
     postCount: 0,
     relatedPosts: [],
+    snackbar: {
+      show: false,
+      color: "",
+      message: "",
+    },
   },
   mutations: {
     SET_POSTS(state, payload) {
@@ -30,6 +35,9 @@ export default new Vuex.Store({
     },
     TOGGLE_LOADER(state, payload) {
       state.showLoader = payload;
+    },
+    TOGGLE_SNACKBAR(state, payload) {
+      state.snackbar = payload;
     },
   },
   actions: {},
