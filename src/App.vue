@@ -9,12 +9,14 @@
     </v-app-bar>
 
     <v-main>
+      <!-- for rendering views -->
       <router-view></router-view>
+      <!-- to show relevant errors if any -->
       <v-snackbar
         v-model="$store.state.snackbar.show"
         bottom
         center
-        :timeout="0"
+        :timeout="3000"
         :color="this.$store.state.snackbar.color"
       >
         {{ $store.state.snackbar.message }}

@@ -5,11 +5,13 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    // truecaller home page
     path: "",
     name: "Home",
     component: () => import("@/components/blog/Index.vue"),
   },
   {
+    // for blog details
     path: "/:blogName",
     component: () => import("@/components/blog/BlogDetails.vue"),
   },

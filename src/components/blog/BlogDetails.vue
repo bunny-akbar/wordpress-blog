@@ -1,4 +1,5 @@
 <template>
+  <!-- This component will be rendered as the view for an individual blog details i.e., the user can from this link, read the contents of the blog -->
   <v-container fill-height>
     <v-row>
       <v-col cols="12" class="mt-12 pt-12">
@@ -48,7 +49,7 @@
           <v-card flat class="app-shadow">
             <v-list class="pa-4" flat>
               <v-subheader>Related Posts</v-subheader>
-              {{ relatedPosts }}
+              {{ relatedPosts.length === 0 ? `No related posts` : "" }}
               <v-list-item v-for="post in relatedPosts" :key="post.ID">
                 <v-list-item-content>
                   <v-list-item-title> {{ post }}</v-list-item-title>
@@ -69,6 +70,7 @@ export default {
   name: "BlogDetails",
   data() {
     return {
+      // since the APIs send the categories as maps, We will convert the keys to a string
       category: "",
     };
   },
@@ -88,6 +90,7 @@ export default {
     },
   },
   watch: {
+    // setting up watcheers fpr instantly updating the dom
     blog: {
       async handler(val) {
         console.log(val);
@@ -103,13 +106,18 @@ export default {
       deep: true,
     },
     blogId: {
+      // updating in watchers, for easy updation
       async handler(id) {
         await fetchRelatedPosts(id);
       },
       immediate: true,
     },
   },
-  async mounted() {},
+  async mounted() {
+    // since we are just updating the view(done to optimize performance), we will have to scroll to the top or to an ID when
+    // we land on this component. Here I am just scrolling to the top
+    window.scrollTo(0, 0);
+  },
 };
 </script>
 

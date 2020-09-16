@@ -54,8 +54,10 @@ export default {
     },
   },
   watch: {
+    // setting up watcheers for instantly updating the dom
     category: {
       async handler(newVal) {
+        // for watching category update. We will instabtly update the posts as and when the category changes
         this.loading = true;
         if (!newVal && !this.tag) {
           await fetchBlogs();
@@ -68,6 +70,7 @@ export default {
       immediate: true,
     },
     tag: {
+      // for watchinh tag changes. serves same purpose as category watcher but for tags
       async handler(newVal) {
         this.loading = true;
         if (!newVal && !this.category) {
@@ -81,6 +84,7 @@ export default {
       immediate: true,
     },
     page: {
+      // for watchinh tag changes. serves same purpose as category watcher but for page
       async handler(page) {
         if (!page) return;
         this.loading = true;
@@ -92,15 +96,13 @@ export default {
   },
   methods: {
     navToPage(page) {
+      // to support pagination and categories. we can also use a dedicated route for categories.
+      // this is just a choice to keep both as query params
       if (this.category)
         return this.$router.push(`?category=${this.category}&&page=${page}`);
       if (this.tag) return this.$router.push(`?tag=${this.tag}&&page=${page}`);
       this.$router.push(`?page=${page}`);
-      // fetchNextPage(page)
     },
   },
-  // mounted() {
-  //   console.log(this.$route.query);
-  // },
 };
 </script>

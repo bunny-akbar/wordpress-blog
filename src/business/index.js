@@ -16,7 +16,6 @@ const siteId = "107403796";
 
 async function fetchBlogs() {
   // fetches first 25 posts
-
   try {
     const res = await axios.get(
       `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts?number=25`
@@ -30,6 +29,7 @@ async function fetchBlogs() {
 }
 
 async function fetchCategories() {
+  // fetches all available categories
   try {
     const res = await axios.get(
       `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/categories`
@@ -42,11 +42,14 @@ async function fetchCategories() {
 }
 
 async function fetchTags() {
+  // fetches all available tags
   try {
     const res = await axios.get(
       `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/tags`
     );
+    // sort all the tags based on the number of times they are used
     const sorted = res.data.tags.sort((a, b) => b.post_count - a.post_count);
+    // select top ten
     const topTen = sorted.slice(0, 10);
     store.commit("SET_TOP_TAGS", topTen);
     return true;
@@ -56,6 +59,7 @@ async function fetchTags() {
 }
 
 async function fetchPostsbyTagOrCategory(type, value) {
+  // fetches posts by tag or category
   try {
     const res = await axios.get(
       `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts?${type}=${value}&&?number=25`
@@ -70,6 +74,7 @@ async function fetchPostsbyTagOrCategory(type, value) {
 }
 
 async function fetchRelatedPosts(postID) {
+  // fetches related posts to the postID
   try {
     const res = await axios.post(
       `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/${postID}/related`
@@ -82,9 +87,9 @@ async function fetchRelatedPosts(postID) {
 }
 
 async function fetchPostsByPage(page, category, tag) {
+  // pagination enabled fetching
   try {
     let url = `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts?page=${page}&&per_page=25`;
-
     if (category)
       url = `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts?category=${category}&&page=${page}&&per_page=25`;
     if (tag)
@@ -99,7 +104,7 @@ async function fetchPostsByPage(page, category, tag) {
 }
 
 function errorHandler(err) {
-  errorHandler(err);
+  // generic error handler for all errors
   let message = null;
 
   if (err.response) {

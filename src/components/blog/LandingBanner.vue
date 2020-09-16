@@ -1,4 +1,5 @@
 <template>
+  <!-- the landing page banner section. handles necessary things for this view. -->
   <v-card
     :height="$vuetify.breakpoint.xsOnly ? '00px' : `${pageHeight}`"
     dark
@@ -98,6 +99,8 @@ export default {
     };
   },
   computed: {
+    // for first post, getting all the required props for the view
+    // using computed properties because on change, I want the properties to reflect immediately
     postImage() {
       return this.$store.state.posts[0]
         ? this.$store.state.posts[0].post_thumbnail.URL
@@ -151,6 +154,7 @@ export default {
     },
   },
   watch: {
+    // This is for the message to be shown if there are 0 search results
     postCount: {
       handler(val) {
         console.log(val);
@@ -162,6 +166,7 @@ export default {
   },
   methods: {
     navToBlog() {
+      // nav to a clicked blog page(blog details)
       const blog = this.$store.state.posts[0];
       this.$router.push(`/${blog.title}?blogId=${blog.ID}`);
     },

@@ -1,4 +1,5 @@
 <template>
+  <!-- a simple layout that handles the loading time and the views -->
   <v-container
     class="pa-0"
     :style="

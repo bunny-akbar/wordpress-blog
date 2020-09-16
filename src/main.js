@@ -9,6 +9,7 @@ import { fetchCategories, fetchTags } from "@/business/index.js";
 Vue.config.productionTip = false;
 
 async function init() {
+  // fetching initial data for views
   await fetchCategories();
   await fetchTags();
 }

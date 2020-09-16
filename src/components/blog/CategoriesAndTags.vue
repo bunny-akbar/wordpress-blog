@@ -1,4 +1,5 @@
 <template>
+  <!-- the component that will display available categories and top 10 tags on the home page -->
   <div class="sticky--card">
     <v-card color="transparent" flat height="80px"> </v-card>
     <v-card flat class="app-shadow">
@@ -49,13 +50,8 @@ export default {
     },
   },
   methods: {
-    pickColor() {
-      const random = Math.random();
-      console.log(random);
-      if (random <= 0) return this.pickColor();
-      return `rgba(12, 39, 58, ${random})`;
-    },
     refreshPosts(by, value) {
+      // on route change, the watcher in index.vue will take care of replacing the view
       this.$router.push(`?${by}=${value}`);
     },
   },

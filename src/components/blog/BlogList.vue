@@ -1,4 +1,5 @@
 <template>
+  <!-- This is a component that displayes the list to blogs available  -->
   <v-container>
     <v-row>
       <v-col cols="12" class="pa-5" md="6" v-for="blog in blogs" :key="blog.id">
@@ -68,6 +69,7 @@ export default {
   },
   methods: {
     setCategories(obj) {
+      // function that converts all available categories in the map to string
       const arr = Object.keys(obj);
       if (arr.length === 1) return arr[0];
       let categories = "";
@@ -77,13 +79,15 @@ export default {
       return categories;
     },
     calcDate(d) {
+      // to determine how many days before the post was made
       return Math.round(Math.abs(+new Date() - +new Date(d)) / 8.64e7);
     },
     navToBlog(blogId) {
+      // router navigation
       const blog = this.$store.state.posts.filter(
         (post) => post.ID == blogId
       )[0];
-      console.log(blog);
+
       this.$router.push(`/${blog.title}?blogId=${blog.ID}`);
     },
   },
