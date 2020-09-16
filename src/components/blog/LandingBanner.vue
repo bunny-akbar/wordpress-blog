@@ -78,8 +78,8 @@
               <v-list-item-content>
                 <v-list-item-title>{{ author.name }}</v-list-item-title>
                 <v-list-item-subtitle class="overline my-1"
-                  >{{ date }} days ago</v-list-item-subtitle
-                >
+                  >{{ date === 0 ? "Posted Today" : date + " days ago" }}
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-card>

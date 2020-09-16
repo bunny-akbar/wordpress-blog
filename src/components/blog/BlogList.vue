@@ -43,9 +43,11 @@
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>{{ blog.author.name }}</v-list-item-title>
-                  <v-list-item-subtitle class="overline my-1"
-                    >{{ calcDate(blog.date) }} days ago</v-list-item-subtitle
-                  >
+                  <v-list-item-subtitle class="overline my-1">{{
+                    calcDate(blog.date) === 0
+                      ? "Posted Today"
+                      : calcDate(blog.date) + " days ago"
+                  }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
             </v-list>
