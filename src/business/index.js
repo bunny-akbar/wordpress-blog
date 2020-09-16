@@ -86,9 +86,10 @@ async function fetchRelatedPosts(postID) {
 
 async function fetchPostsByPage(page, category) {
   try {
-    const res = await axios.get(
-      `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts?category=${category}&&page=${page}&&per_page=25`
-    );
+    const url = category
+      ? `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts?category=${category}&&page=${page}&&per_page=25`
+      : `https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts?page=${page}&&per_page=25`;
+    const res = await axios.get(url);
     store.commit("SET_POSTS", res.data.posts);
     store.commit("SET_POST_COUNT", res.data.found);
     return true;
